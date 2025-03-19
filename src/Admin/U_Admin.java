@@ -6,6 +6,7 @@
 package Admin;
 
 import Admin.CreateUserForm;
+import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
 import dbConnect.dbConnector;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -87,6 +88,11 @@ public class U_Admin extends javax.swing.JFrame {
 
         Add.setFont(new java.awt.Font("Tahoma", 3, 12)); // NOI18N
         Add.setText("Add");
+        Add.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                AddMouseClicked(evt);
+            }
+        });
         Add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AddActionPerformed(evt);
@@ -136,8 +142,8 @@ public class U_Admin extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("TABLE");
-        jPanel5.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 10, 180, 30));
+        jLabel1.setText("ADMIN DASHBOARD");
+        jPanel5.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 10, 260, 30));
 
         jPanel3.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 820, 50));
 
@@ -188,7 +194,43 @@ public class U_Admin extends javax.swing.JFrame {
     }//GEN-LAST:event_RemoveActionPerformed
 
     private void UpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_UpdateMouseClicked
-        // TODO add your handling code here:
+        int rowIndex = tbl_user.getSelectedRow();
+        
+        if(rowIndex < 0)
+        {
+            JOptionPane.showMessageDialog(null, "Please select an Item");
+        }else
+        {
+            CreateUserForm cuf = new CreateUserForm();
+            
+            try
+            {
+                dbConnector dbc = new dbConnector();
+                TableModel tbl_user = table.getModel();
+                ResultSet rs = dbc.getData("SELECT * FROM tbl_accounts WHERE u_id = '"+tbl_user.getValueAt(rowIndex,0)+"'");
+                if(rs.next())
+                {
+                    
+                    cuf.IID.setText("" + rs.getString("u_id"));
+                    cuf.fname.setText("" +rs.getString("u_fname"));
+                    cuf.lname.setText("" + rs.getString("u_lname"));
+                    cuf.username.setText("" + rs.getString("u_username"));
+                    cuf.type.setSelectedItem("" + rs.getString("u_type"));
+                    cuf.status.setSelectedItem("" + rs.getString("u_status"));
+//                    cuf.MR_password.setText("" + rs.getString("u_password"));
+                    cuf.cnum.setText("" + rs.getString("u_phone"));
+                    cuf.add.setEnabled(false);
+                    cuf.update.setEnabled(true);
+
+                    cuf.setVisible(true);
+                    this.dispose();
+                }
+                
+            }catch(SQLException ex)
+            {
+                System.out.println(""+ex);
+            }
+        }
     }//GEN-LAST:event_UpdateMouseClicked
 
     private void UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateActionPerformed
@@ -239,6 +281,12 @@ public class U_Admin extends javax.swing.JFrame {
     private void RefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RefreshActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_RefreshActionPerformed
+
+    private void AddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AddMouseClicked
+        CreateUserForm cuf = new CreateUserForm();
+        cuf.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_AddMouseClicked
 
     /**
      * @param args the command line arguments

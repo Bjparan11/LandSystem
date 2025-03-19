@@ -235,7 +235,6 @@ public class Registration extends javax.swing.JFrame {
                 + email.getText() + "','" + cnum.getText() + "', '" + type.getSelectedItem().toString() + "', 'PENDING')")) {
             JOptionPane.showMessageDialog(null, "Register Successfully");
 
-            JOptionPane.showMessageDialog(null, "Inserted Successfully!");
             Login ads = new Login();
             ads.setVisible(true);
             this.dispose(); 

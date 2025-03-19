@@ -7,6 +7,9 @@ package Admin;
 
 import Logs.Login;
 import dbConnect.dbConnector;
+import java.security.NoSuchAlgorithmException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
@@ -24,6 +27,84 @@ public class CreateUserForm extends javax.swing.JFrame {
         initComponents();
     }
 
+     public static String phone,usname;
+   
+
+    
+    public boolean duplicateCheck()
+    {
+        dbConnector dbc = new dbConnector();
+        String c = cnum.getText().trim();
+        String us = username.getText().trim();
+        
+        try
+        {
+            String query = "SELECT * FROM tbl_user WHERE u_username='"+ us +"'OR i_phone='"+ c +"'";
+            ResultSet resultSet = dbc.getData(query);
+            if(resultSet.next())
+            {
+                phone = resultSet.getString("i_phone");
+                if(phone.equals(c))
+                {
+                    JOptionPane.showMessageDialog(null, "Phone Number is Already Used");
+                    cnum.setText("");
+                }
+                
+                usname = resultSet.getString("i_username");
+                if(usname.equals(us))
+                {
+                    JOptionPane.showMessageDialog(null, "Username is Already Used");
+                    username.setText("");
+                }
+                return true;
+            }else
+            {
+                return false;
+            }
+        }catch(SQLException ex)
+        {
+            System.out.println(""+ex);
+            return false;
+        }
+    }
+    
+    public boolean updateCheck()
+    {
+        dbConnector dbc = new dbConnector();
+        String u = IID.getText().trim();
+        String c = cnum.getText().trim();
+        String us = username.getText().trim();
+        
+        try
+        {
+            String query = "SELECT * FROM tbl_user WHERE (i_username='"+ us +"'OR u_phone='"+ c +"') AND i_id != '"+u+"'";
+            ResultSet resultSet = dbc.getData(query);
+            if(resultSet.next())
+            {
+                phone = resultSet.getString("i_phone");
+                if(phone.equals(c))
+                {
+                    JOptionPane.showMessageDialog(null, "Phone Number is Already Used");
+                    cnum.setText("");
+                }
+                
+                usname = resultSet.getString("i_username");
+                if(usname.equals(us))
+                {
+                    JOptionPane.showMessageDialog(null, "Username is Already Used");
+                    username.setText("");
+                }
+                return true;
+            }else
+            {
+                return false;
+            }
+        }catch(SQLException ex)
+        {
+            System.out.println(""+ex);
+            return false;
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -44,10 +125,10 @@ public class CreateUserForm extends javax.swing.JFrame {
         LastName = new javax.swing.JLabel();
         user = new javax.swing.JLabel();
         username = new javax.swing.JTextField();
-        password1 = new javax.swing.JTextField();
+        password = new javax.swing.JTextField();
         dob1 = new javax.swing.JLabel();
         dob = new javax.swing.JLabel();
-        password = new javax.swing.JTextField();
+        cpass = new javax.swing.JTextField();
         email = new javax.swing.JTextField();
         stats1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -106,7 +187,7 @@ public class CreateUserForm extends javax.swing.JFrame {
                 lnameActionPerformed(evt);
             }
         });
-        jPanel1.add(lname, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 120, 170, -1));
+        jPanel1.add(lname, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 110, 170, 30));
 
         LastName.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         LastName.setText("LASTNAME:");
@@ -121,14 +202,14 @@ public class CreateUserForm extends javax.swing.JFrame {
                 usernameActionPerformed(evt);
             }
         });
-        jPanel1.add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 160, 170, -1));
+        jPanel1.add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 150, 170, 30));
 
-        password1.addActionListener(new java.awt.event.ActionListener() {
+        password.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                password1ActionPerformed(evt);
+                passwordActionPerformed(evt);
             }
         });
-        jPanel1.add(password1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 200, 170, -1));
+        jPanel1.add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 190, 170, 30));
 
         dob1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         dob1.setText("PASSWORD:");
@@ -138,12 +219,12 @@ public class CreateUserForm extends javax.swing.JFrame {
         dob.setText("CONFIRM PASSWORD :");
         jPanel1.add(dob, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 40, -1, -1));
 
-        password.addActionListener(new java.awt.event.ActionListener() {
+        cpass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passwordActionPerformed(evt);
+                cpassActionPerformed(evt);
             }
         });
-        jPanel1.add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 30, 190, 30));
+        jPanel1.add(cpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 30, 190, 30));
 
         email.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -188,6 +269,11 @@ public class CreateUserForm extends javax.swing.JFrame {
 
         add.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         add.setText("ADD");
+        add.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addMouseClicked(evt);
+            }
+        });
         add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addActionPerformed(evt);
@@ -197,6 +283,11 @@ public class CreateUserForm extends javax.swing.JFrame {
 
         update.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         update.setText("UPDATE");
+        update.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                updateMouseClicked(evt);
+            }
+        });
         update.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 updateActionPerformed(evt);
@@ -248,11 +339,11 @@ public class CreateUserForm extends javax.swing.JFrame {
 
     private void fnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fnameActionPerformed
         if(fname.getText().isEmpty() || lname.getText().isEmpty() || email.getText().isEmpty() || username.getText().isEmpty()
-            || password.getText().isEmpty()){
+            || cpass.getText().isEmpty()){
             JOptionPane.showMessageDialog(null, "All fields are required!");
-        }else if(password.getText().length() < 8){
+        }else if(cpass.getText().length() < 8){
             JOptionPane.showMessageDialog(null, "Characters password is 8 above!");
-            password.setText("");
+            cpass.setText("");
         }else if(!isValidEmail(email.getText())){
             JOptionPane.showMessageDialog(null, "Invalid Email");
         } else if (!isNumeric(cnum.getText())) {
@@ -266,11 +357,10 @@ public class CreateUserForm extends javax.swing.JFrame {
 
             if (dbc.insertData("INSERT INTO user(i_fname, i_lname, i_username, i_password, i_email, i_phonenumber, i_type, status) "
                 + "VALUES('" + fname.getText() + "', '" + lname.getText() + "', '"
-                + username.getText() + "', '" + password.getText() + "', '"
+                + username.getText() + "', '" + cpass.getText() + "', '"
                 + email.getText() + "','" + cnum.getText() + "', '" + type.getSelectedItem().toString() + "', 'PENDING')")) {
             JOptionPane.showMessageDialog(null, "Register Successfully");
 
-            JOptionPane.showMessageDialog(null, "Inserted Successfully!");
             Login ads = new Login();
             ads.setVisible(true);
             this.dispose();
@@ -289,9 +379,9 @@ public class CreateUserForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_usernameActionPerformed
 
-    private void passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordActionPerformed
+    private void cpassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpassActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_passwordActionPerformed
+    }//GEN-LAST:event_cpassActionPerformed
 
     private void registerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerActionPerformed
 
@@ -317,11 +407,11 @@ public class CreateUserForm extends javax.swing.JFrame {
 
     private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
         if(fname.getText().isEmpty() || lname.getText().isEmpty() || email.getText().isEmpty() || username.getText().isEmpty()
-            || password.getText().isEmpty()){
+            || cpass.getText().isEmpty()){
             JOptionPane.showMessageDialog(null, "All fields are required!");
-        }else if(password.getText().length() < 8){
+        }else if(cpass.getText().length() < 8){
             JOptionPane.showMessageDialog(null, "Characters password is 8 above!");
-            password.setText("");
+            cpass.setText("");
         }else if(!isValidEmail(email.getText())){
             JOptionPane.showMessageDialog(null, "Invalid Email");
         } else if (!isNumeric(cnum.getText())) {
@@ -334,7 +424,7 @@ public class CreateUserForm extends javax.swing.JFrame {
             dbConnector dbc = new dbConnector();
 
             dbc.updateData("UPDATE user Set i_fname = '" + fname.getText() + "', i_lname =  '" + lname.getText() + "', i_username = '"+ username.getText() + "'"
-                + ", i_password = '" + password.getText() + "', i_email = '"+ email.getText() + "', i_phonenumber = '" + cnum.getText() + "', i_type = '" + type.getSelectedItem().toString() + "', "
+                + ", i_password = '" + cpass.getText() + "', i_email = '"+ email.getText() + "', i_phonenumber = '" + cnum.getText() + "', i_type = '" + type.getSelectedItem().toString() + "', "
                 + "status = '" + status.getSelectedItem().toString() + "'");
 
             U_Admin ua = new U_Admin();
@@ -352,9 +442,9 @@ public class CreateUserForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_refreshActionPerformed
 
-    private void password1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_password1ActionPerformed
+    private void passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_password1ActionPerformed
+    }//GEN-LAST:event_passwordActionPerformed
 
     private void cnumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cnumActionPerformed
         // TODO add your handling code here:
@@ -363,6 +453,109 @@ public class CreateUserForm extends javax.swing.JFrame {
     private void IIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IIDActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_IIDActionPerformed
+
+    private void addMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addMouseClicked
+    dbConnector dbc = new dbConnector();
+        String fn = fname.getText().trim();
+        String ln = fname.getText().trim();
+        String uname = username.getText().trim();
+        String pass = new String(cpass.getText()).trim();
+        
+        String c = cnum.getText().trim();
+        String at = type.getSelectedItem().toString().trim();
+        String s = status.getSelectedItem().toString().trim();
+
+
+        if(uname.isEmpty() || pass.isEmpty() || cpass.isEmpty() || ln.isEmpty() || fn.isEmpty())
+        {
+            JOptionPane.showMessageDialog(null, "Please Fill All Boxes");
+
+        }else if(!pass.equals(cpass))
+        {
+            JOptionPane.showMessageDialog(null, "Password Does Not Match");
+            //System.out.println("Password ["+password+"] Length: "+password.length());
+            //System.out.println("Confirm Password ["+Cpassword+"] Length: "+Cpassword.length());
+        }else if(!cpass.matches("\\d+"))
+        {
+            JOptionPane.showMessageDialog(null, "Phone Must Only Contain Numbers");
+        }else if(pass.length() <= 7)
+        {
+            JOptionPane.showMessageDialog(null, "Password Must be Exactly 8 Characters Long");
+        }else if(cpass.length() > 15 || cpass.length() < 11)
+        {
+            JOptionPane.showMessageDialog(null, "Invalid Phone num");
+        }else if(duplicateCheck())
+        {
+            System.out.println("Duplicate Exists");
+        }else
+        {
+            try
+            {
+                String npass = passwordHasher.hashPassword(this.cpass.getText());
+                
+                dbc.insertData("INSERT INTO tbl_users (i_fname, i_lname, i_username, i_type, i_password, i_phone, i_status) "
+                        + "VALUES ('" + fn + "', '" + ln + "', '" + uname + "', '" + at + "','" + npass + "', '" + c + "',  '" + s + "')");
+                JOptionPane.showMessageDialog(null, "Registered succesfully!");
+                U_Admin ua = new U_Admin();
+                ua.setVisible(true);
+                this.dispose();
+            } catch(NoSuchAlgorithmException ex) 
+            {
+                System.out.println("" + ex);
+            }
+        }    
+    }//GEN-LAST:event_addMouseClicked
+
+    private void updateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateMouseClicked
+       dbConnector dbc = new dbConnector();
+        String u = IID.getText().trim();
+        String fn = fname.getText().trim();
+        String ln = lname.getText().trim();
+        String uname = username.getText().trim();
+        String pass = new String(cpass.getPassword()).trim();
+        String cpass = new String(cpass.getPassword()).trim();
+        String c = cnum.getText().trim();
+        String at = type.getSelectedItem().toString().trim();
+        String s = status.getSelectedItem().toString().trim();
+        
+        
+        if(uname.isEmpty() || pass.isEmpty() || cpass.isEmpty() || ln.isEmpty() || fn.isEmpty())
+        {
+            JOptionPane.showMessageDialog(null, "Please Fill All Boxes");
+
+        }else if(!pass.equals(cpass))
+        {
+            JOptionPane.showMessageDialog(null, "Password Does Not Match");
+            //System.out.println("Password ["+password+"] Length: "+password.length());
+            //System.out.println("Confirm Password ["+Cpassword+"] Length: "+Cpassword.length());
+        }else if(!pass.matches("\\d+"))
+        {
+            JOptionPane.showMessageDialog(null, "Phone Must Only Contain Numbers");
+        }else if(pass.length() <= 7)
+        {
+            JOptionPane.showMessageDialog(null, "Password Must be Exactly 8 Characters Long");
+        }else if(cpass.length() > 15 || cpass.length() < 11)
+        {
+            JOptionPane.showMessageDialog(null, "Invalid Phone num");
+        }else if(updateCheck())
+        {
+            System.out.println("Duplicate Exists");
+        }else
+        {
+            try {
+                String cpass = passwordHasher.hashPassword(cpass.getText());
+
+                dbc.updateData("UPDATE tbl_user SET i_fname = '" + fn + "', i_lname = '" + ln + "', i_username = '" + uname + "',"
+                            + " i_password = '"+cpass+"', i_phone = '"+p+"', i_type = '"+at+"', i_status = '"+s+"' WHERE i_id = '"+u+"'");
+                U_Admin ua = new U_Admin();
+                ua.setVisible(true);
+                this.dispose();
+            } catch (NoSuchAlgorithmException ex) {
+                System.out.println("" + ex);
+            }
+        }
+        
+    }//GEN-LAST:event_updateMouseClicked
 
     /**
      * @param args the command line arguments
@@ -404,6 +597,7 @@ public class CreateUserForm extends javax.swing.JFrame {
     private javax.swing.JLabel LastName;
     public javax.swing.JButton add;
     public javax.swing.JTextField cnum;
+    public javax.swing.JTextField cpass;
     private javax.swing.JLabel dob;
     private javax.swing.JLabel dob1;
     public javax.swing.JTextField email;
@@ -417,7 +611,6 @@ public class CreateUserForm extends javax.swing.JFrame {
     private javax.swing.JLabel name;
     private javax.swing.JLabel name1;
     public javax.swing.JTextField password;
-    public javax.swing.JTextField password1;
     private javax.swing.JButton refresh;
     private javax.swing.JButton register;
     private javax.swing.JButton remove;
