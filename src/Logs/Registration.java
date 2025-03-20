@@ -222,6 +222,9 @@ public class Registration extends javax.swing.JFrame {
         }else if(cnum.getText().length() > 15 || cnum.getText().length() < 11)
         {
             JOptionPane.showMessageDialog(null, "Invalid Phone num");
+        }else if(duplicateCheck())
+        {
+            System.out.println("Duplicate Exists");
         }else{
 
             dbConnector dbc = new dbConnector();

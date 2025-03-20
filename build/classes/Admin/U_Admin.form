@@ -67,6 +67,7 @@
             <Property name="text" type="java.lang.String" value="Add"/>
           </Properties>
           <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="AddMouseClicked"/>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AddActionPerformed"/>
           </Events>
           <Constraints>
@@ -147,11 +148,11 @@
                   <Font name="Times New Roman" size="24" style="1"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value="TABLE"/>
+                <Property name="text" type="java.lang.String" value="ADMIN DASHBOARD"/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="310" y="10" width="180" height="30"/>
+                  <AbsoluteConstraints x="310" y="10" width="260" height="30"/>
                 </Constraint>
               </Constraints>
             </Component>

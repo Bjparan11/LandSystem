@@ -194,43 +194,43 @@ public class U_Admin extends javax.swing.JFrame {
     }//GEN-LAST:event_RemoveActionPerformed
 
     private void UpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_UpdateMouseClicked
-        int rowIndex = tbl_user.getSelectedRow();
-        
-        if(rowIndex < 0)
-        {
-            JOptionPane.showMessageDialog(null, "Please select an Item");
-        }else
-        {
-            CreateUserForm cuf = new CreateUserForm();
-            
-            try
-            {
-                dbConnector dbc = new dbConnector();
-                TableModel tbl_user = table.getModel();
-                ResultSet rs = dbc.getData("SELECT * FROM tbl_accounts WHERE u_id = '"+tbl_user.getValueAt(rowIndex,0)+"'");
-                if(rs.next())
-                {
-                    
-                    cuf.IID.setText("" + rs.getString("u_id"));
-                    cuf.fname.setText("" +rs.getString("u_fname"));
-                    cuf.lname.setText("" + rs.getString("u_lname"));
-                    cuf.username.setText("" + rs.getString("u_username"));
-                    cuf.type.setSelectedItem("" + rs.getString("u_type"));
-                    cuf.status.setSelectedItem("" + rs.getString("u_status"));
-//                    cuf.MR_password.setText("" + rs.getString("u_password"));
-                    cuf.cnum.setText("" + rs.getString("u_phone"));
-                    cuf.add.setEnabled(false);
-                    cuf.update.setEnabled(true);
-
-                    cuf.setVisible(true);
-                    this.dispose();
-                }
-                
-            }catch(SQLException ex)
-            {
-                System.out.println(""+ex);
-            }
-        }
+//        int rowIndex = tbl_user.getSelectedRow();
+//        
+//        if(rowIndex < 0)
+//        {
+//            JOptionPane.showMessageDialog(null, "Please select an Item");
+//        }else
+//        {
+//            CreateUserForm cuf = new CreateUserForm();
+//            
+//            try
+//            {
+//                dbConnector dbc = new dbConnector();
+//                TableModel tbl_user = table.getModel();
+//                ResultSet rs = dbc.getData("SELECT * FROM tbl_accounts WHERE u_id = '"+tbl_user.getValueAt(rowIndex,0)+"'");
+//                if(rs.next())
+//                {
+//                    
+//                    cuf.IID.setText("" + rs.getString("u_id"));
+//                    cuf.fname.setText("" +rs.getString("u_fname"));
+//                    cuf.lname.setText("" + rs.getString("u_lname"));
+//                    cuf.username.setText("" + rs.getString("u_username"));
+//                    cuf.type.setSelectedItem("" + rs.getString("u_type"));
+//                    cuf.status.setSelectedItem("" + rs.getString("u_status"));
+////                    cuf.MR_password.setText("" + rs.getString("u_password"));
+//                    cuf.cnum.setText("" + rs.getString("u_phone"));
+//                    cuf.add.setEnabled(false);
+//                    cuf.update.setEnabled(true);
+//
+//                    cuf.setVisible(true);
+//                    this.dispose();
+//                }
+//                
+//            }catch(SQLException ex)
+//            {
+//                System.out.println(""+ex);
+//            }
+//        }
     }//GEN-LAST:event_UpdateMouseClicked
 
     private void UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateActionPerformed
@@ -255,7 +255,7 @@ public class U_Admin extends javax.swing.JFrame {
                     cuf.fname.setText("" + rs.getString("i_fname"));
                     cuf.lname.setText("" + rs.getString("i_lname"));
                     cuf.username.setText("" + rs.getString("i_username"));
-                    cuf.password.setText("" + rs.getString("i_password"));
+                   // cuf.password.setText("" + rs.getString("i_password"));
                     cuf.email.setText("" + rs.getString("i_email"));
                     cuf.cnum.setText("" + rs.getString("i_phonenumber"));
                     cuf.type.setSelectedItem("" + rs.getString("i_type"));

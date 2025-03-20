@@ -213,20 +213,22 @@ public class UserDashboard extends javax.swing.JFrame {
 
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
         Session sess = Session.getInstance();
-        accountDetails accd = new accountDetails();
+        AccountDetails accd = new AccountDetails();
         
         try
         {
             dbConnector dbc = new dbConnector();
-            ResultSet rs = dbc.getData("SELECT * FROM tbl_accounts WHERE u_id = '"+sess.getUid()+"'");
+            ResultSet rs = dbc.getData("SELECT * FROM tbl_accounts WHERE u_id = '"+sess.getIid()+"'");
             if(rs.next())
             {
 
 
-                accd.Fname.setText("" +rs.getString("u_fname"));
-                accd.Lname.setText("" + rs.getString("u_lname"));
-                accd.MR_username.setText("" + rs.getString("u_username"));
-                accd.phone.setText("" + rs.getString("u_phone"));
+                accd.fname.setText("" +rs.getString("u_fname"));
+                accd.lname.setText("" + rs.getString("u_lname"));
+                accd.username.setText("" + rs.getString("u_username"));
+                accd.acc_email.setText("" + rs.getString("u_phone"));
+                accd.acc_cnum.setText("" + rs.getString("u_phone"));
+                accd.cnum.setText("" + rs.getString("u_phone"));
 
 
                 accd.setVisible(true);
@@ -275,11 +277,11 @@ public class UserDashboard extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel acc_Iid;
-    private javax.swing.JLabel acc_cnum;
-    private javax.swing.JLabel acc_email;
+    public javax.swing.JLabel acc_cnum;
+    public javax.swing.JLabel acc_email;
     private javax.swing.JLabel acc_fname;
     private javax.swing.JLabel acc_lname;
-    private javax.swing.JLabel acc_type;
+    public javax.swing.JLabel acc_type;
     private javax.swing.JLabel acc_username;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

@@ -332,8 +332,8 @@ public class AccountDetails extends javax.swing.JFrame {
     private javax.swing.JButton Back;
     private javax.swing.JButton Save;
     private javax.swing.JLabel acc_Iid;
-    private javax.swing.JLabel acc_cnum;
-    private javax.swing.JLabel acc_email;
+    javax.swing.JLabel acc_cnum;
+    javax.swing.JLabel acc_email;
     private javax.swing.JLabel acc_fname;
     private javax.swing.JLabel acc_lname;
     private javax.swing.JLabel acc_type;
